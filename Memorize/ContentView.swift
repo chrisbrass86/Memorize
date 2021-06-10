@@ -12,6 +12,8 @@ struct ContentView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
    
     var body: some View {
+        VStack {
+            gameMenuAndStatusBar
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
                     ForEach(viewModel.cards)  { card in
@@ -23,10 +25,34 @@ struct ContentView: View {
                     }
                 }
             }
-            .foregroundColor(.red)
+            .foregroundColor(viewModel.themeColor)
             .padding(.horizontal)
-             
+        }
     }
+    
+    var gameMenuAndStatusBar: some View {
+        HStack {
+            newGameButton
+                .padding(10)
+            Spacer()
+            Text("Points: \(viewModel.score)")
+            Spacer()
+            Text("Theme: \(viewModel.themeName)")
+                .padding(10)
+        }
+    }
+    
+    var newGameButton: some View {
+          Button {
+            viewModel.newGame()
+          } label: {
+            Text("New Game")
+                .padding(10)
+                .foregroundColor(Color.white)
+                .background(viewModel.themeColor)
+                .cornerRadius(40)
+          }
+      }
 
 }
 
